@@ -11,9 +11,12 @@ int main(void)
 {
 	char low;
 
-	for (low = 'a'; low <= 'z' && low != 'q' && low != 'e'; low++)
+	for (low = 'a'; low <= 'z'; low++)
 	{
-		putchar(low);
+		if (low != 'e' && low != 'q')
+		{
+			putchar(low);
+		}
 	}
 	putchar('\n');
 	return (0);
