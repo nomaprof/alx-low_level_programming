@@ -1,21 +1,23 @@
 #include "main.h"
 
 /**
- * main - Check description
- * Description: It prints the word _putchar, followed by a new line.
- * Return: 0.
- */
+*main - function prints text as output
+*
+*Return:return 0
+*/
 
 int main(void)
 {
-	_putchar('_');
-	_putchar('p');
-	_putchar('u');
-	_putchar('t');
-	_putchar('c');
-	_putchar('h');
-	_putchar('a');
-	_putchar('r');
+	char c[8] = "_putchar";
+
+	int i;
+
+	for (i = 0; i < 8; i++)
+	{
+		_putchar(c[i]);
+	}
+
 	_putchar('\n');
+
 	return (0);
 }
