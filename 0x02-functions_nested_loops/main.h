@@ -1,5 +1,5 @@
 /**
- * file: maih.h
+ * file: main.h
  * for headers
  */
 
