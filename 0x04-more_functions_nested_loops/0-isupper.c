@@ -1,5 +1,4 @@
 #include "main.h"
-
 /**
 *_isupper - function that verifies if a  character is uppercase or not
 *@c: tested character
@@ -8,19 +7,8 @@
 
 int _isupper(int c)
 {
-	char ch;
-	int isupper;
+if ((c >= 'A') && (c <= 'Z'))
+return (1);
 
-	for (ch = 'A'; ch <= 'Z'; ch++)
-	{
-		if (c == ch)
-		{
-			isupper = 1;
-		}
-		else
-		{
-			isupper = 0;
-		}
-	}
-	return (isupper);
+return (0);
 }
