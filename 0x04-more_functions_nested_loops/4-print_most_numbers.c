@@ -8,12 +8,15 @@
 
 void print_most_numbers(void)
 {
-	int i;
-	char num[10] = "01356789";
+	int num;
 
-	for (i = '0'; i <= '7'; i++)
+	for (num = 48; num < 58; num++)
 	{
-		_putchar(num[i]);
+		if ((num == 50) || (num == 52))
+		{
+			continue;
+		}
+		_putchar(num);
 	}
-	_putchar('\n');
+_putchar ('\n');
 }
