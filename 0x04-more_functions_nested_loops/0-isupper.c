@@ -16,7 +16,10 @@ int _isupper(int c)
 		if (c == ch)
 		{
 			isupper = 1;
-			break;
+		}
+		else
+		{
+			isupper = 0;
 		}
 	}
 	return (isupper);
