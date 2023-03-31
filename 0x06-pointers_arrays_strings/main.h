@@ -19,4 +19,5 @@ char *leet(char *s);
 char *rot13(char *);
 int check_seperators(char c);
 void print_number(int n);
+char *infinite_add(char *n1, char *n2, char *r, int size_r);
 #endif /*MAIN_H*/
