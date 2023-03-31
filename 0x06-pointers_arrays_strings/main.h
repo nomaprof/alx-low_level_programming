@@ -18,4 +18,5 @@ char *cap_string(char *);
 char *leet(char *s);
 char *rot13(char *);
 int check_seperators(char c);
+void print_number(int n);
 #endif /*MAIN_H*/
