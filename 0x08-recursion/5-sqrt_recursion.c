@@ -13,15 +13,14 @@ int _sqrt_recursion(int n)
 	{
 		return (n);
 	}
-	return (ans(0,n));
+	return (ans(0, n));
 }
 
 /**
- * ans - the result
- * @n: trial number
- * @m: the number whose multiplication 
- * with itself gives the original number
- * Return: the value of m
+ * ans - the square root
+ * @n: possible answer
+ * @m: the original value
+ *  Return: the value of n
  */
 
 int ans(int n, int m)
