@@ -23,12 +23,12 @@ int main(int argc, char *argv[])
 				printf("Error\n");
 				return (1);
 			}
-		
+			else
 			{
 				ans += atoi(argv[m]);
-				printf("%d\n", ans);
 			}
 		}
+		printf("%d\n", ans);
 	}
 	else if (argc == 1)
 	{
