@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 	{
 		for (m = 1; m < argc; m++)
 		{
-			if (_isdigit(*argv[m]))
+			if (!(*argv[m] >= 48) && (*argv[m] <= 57))
 			{
 				printf("Error\n");
 				return (1);
