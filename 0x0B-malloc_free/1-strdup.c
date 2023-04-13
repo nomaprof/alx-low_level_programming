@@ -13,12 +13,11 @@ char *_strdup(char *str)
 	char *ans;
 	int i;
 	int m;
-	
+
 	if (str == NULL)
 	{
 		return (NULL);
 	}
-	
 	for (i = 0; str[i]; i++)
 	{
 		m++;
@@ -34,5 +33,5 @@ char *_strdup(char *str)
 	}
 	ans[m] = '\0';
 	return (ans);
-	free (ans);
+	free(ans);
 }
