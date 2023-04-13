@@ -9,43 +9,43 @@
  */
 char **strtow(char *str)
 {
-	char **array;
-	int i = 0, j, m, k = 0, len = 0, count = 0;
+	char **ans;
+	int m = 0, n, p, q = 0, r = 0, s = 0;
 
 	if (str == NULL || *str == '\0')
 		return (NULL);
-	for (; str[i]; i++)
+	for (; str[m]; m++)
 	{
-		if ((str[i] != ' ' || *str != '\t') &&
-				((str[i + 1] == ' ' || str[i + 1] == '\t') || str[i + 1] == '\n'))
-			count++;
+		if ((str[m] != ' ' || *str != '\t') &&
+				((str[m + 1] == ' ' || str[m + 1] == '\t') || str[m + 1] == '\n'))
+			s++;
 	}
-	if (count == 0)
+	if (s == 0)
 		return (NULL);
-	array = malloc(sizeof(char *) * (count + 1));
-	if (array == NULL)
+	ans = malloc(sizeof(char *) * (s + 1));
+	if (ans == NULL)
 		return (NULL);
-	for (i = 0; str[i] != '\0' && k < count; i++)
+	for (m = 0; str[m] != '\0' && q < s; m++)
 	{
-		if (str[i] != ' ' || str[i] != '\t')
+		if (str[m] != ' ' || str[m] != '\t')
 		{
-			len = 0;
-			j = i;
-			while ((str[j] != ' ' || str[j] != '\t') && str[j] != '\0')
-				j++, len++;
-			array[k] = malloc((len + 1) * sizeof(char));
-			if (array[k] == NULL)
+			r = 0;
+			n = m;
+			while ((str[n] != ' ' || str[n] != '\t') && str[n] != '\0')
+				n++, r++;
+			ans[q] = malloc((r + 1) * sizeof(char));
+			if (ans[q] == NULL)
 			{
-				for (k = k - 1; k >= 0; k++)
-					free(array[k]);
-				free(array);
+				for (q = q - 1; q >= 0; q++)
+					free(ans[q]);
+				free(ans);
 				return (NULL);
 			}
-			for (m = 0; m < len; m++, i++)
-				array[k][m] = str[i];
-			array[k++][m] = '\0';
+			for (p = 0; p < r; p++, p++)
+				ans[q][p] = str[m];
+			ans[q++][p] = '\0';
 		}
 	}
-	array[k] = NULL;
-	return (array);
+	ans[q] = NULL;
+	return (ans);
 }
