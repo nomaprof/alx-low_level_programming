@@ -5,7 +5,7 @@
  *
  * @str: the string
  *
- * @Return: a pointer to the location of splitted string
+ * Return: a pointer to the location of splitted string
  */
 char **strtow(char *str)
 {
