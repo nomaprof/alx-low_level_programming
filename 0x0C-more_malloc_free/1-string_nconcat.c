@@ -7,41 +7,40 @@
  *
  * @s2: second string
  *
+ * @n: length of string from second argument
+ *
  * Return: a pointer the concatenation of two strings
  */
 
 char *string_nconcat(char *s1, char *s2, unsigned int n)
 {
 	char *ans;
-	unsigned int i, m = n;
+	unsigned int i = 0, m = 0, p = 0;
 
 	if (s1 == NULL)
-	{
 		s1 = "";
-	}
-	if (s2 == NULL)
-	{
-		s2 = "";
-	}
-	for (i = 0; s1[i]; i++)
-	{
+	while (s1[m])
 		m++;
-	}
-	ans = malloc(sizeof(char) * (m + 1));
+	if (s2 == NULL)
+		s2 = "";
+	while (s2[p])
+		p++;
+	if (n >= p)
+		n = p;
+	ans = malloc(m + n + 1);
 	if (ans == NULL)
-	{
 		return (NULL);
-	}
-	m = 0;
-
-	for (i = 0; s1[i]; i++)
+	for (; i < (m + n); i++)
 	{
-		ans[m++] = s1[i];
+		if (i < m)
+		{
+			ans[i] = *s1, s1++;
+		}
+		else
+		{
+			ans[i] = *s2, s2++;
+		}
 	}
-	for (i = 0; s2[i] && i < n; i++)
-	{
-		ans[m++] = s2[i];
-	}
-	ans[m] = '\0';
+	ans[i] = '\0';
 	return (ans);
 }
