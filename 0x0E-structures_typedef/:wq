@@ -1,0 +1,12 @@
+#include "main.h"
+#include "dog.h"
+
+/**
+ * dog_t *new_dog - create a new dog record
+ * @name: dog name
+ * @age: dog age
+ * @owner: name of dog owner
+ * Result: no value
+ */
+
+
