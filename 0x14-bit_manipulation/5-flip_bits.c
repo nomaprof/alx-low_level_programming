@@ -10,16 +10,17 @@
 
 unsigned int flip_bits(unsigned long int n, unsigned long int m)
 {
-	unsigned int answer =  n ^ m;
+	unsigned int answer =  (n ^ m);
 	int track = 0;
+	unsigned long int furthest = 0x01;
 
-	while (answer)
+	while (furthest <= answer)
 	{
-		if (answer & 1)
+		if (furthest & answer)
 		{
 			track++;
 		}
-		answer >>= 1;
+		furthest <<= 1;
 	}
 	return (track);
 }
