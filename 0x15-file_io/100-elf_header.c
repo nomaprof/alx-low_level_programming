@@ -202,8 +202,8 @@ void myentry(unsigned long int e_entry, unsigned char *e_ident)
 
 	if (e_ident[EI_DATA] == ELFDATA2MSB)
 	{
-		e_entry = ((myflow << 8) & 0xFF00FF00) | ((myflow >> 8) & 0XFF00FF);
-		e_entry = (myflow << 16) | (myflow >> 16);
+		e_entry = ((e_entry << 8) & 0xFF00FF00) | ((e_entry >> 8) & 0XFF00FF);
+		e_entry = (e_entry << 16) | (e_entry >> 16);
 	}
 
 	if (e_ident[EI_CLASS] == ELFCLASS32)
@@ -212,7 +212,7 @@ void myentry(unsigned long int e_entry, unsigned char *e_ident)
 	}
 	else
 	{
-		printf("%#1x\n", e_entry);
+		printf("%#1x\n", (unsigned int)e_entry);
 	}
 }
 
@@ -283,4 +283,35 @@ int main(int __attribute__((__unused__)) argc, char *argv[])
 	free(answer);
 	myclose(ans1);
 	return (0);
+}
+
+/**
+ * myabi - print the elf header ABI version
+ * @e_ident: pointer to ABI version array
+ *
+ * Return: ABI version
+ */
+void myabi(unsigned char *e_ident)
+{
+	printf(" ABI Version:                               %d\n", e_ident[EI_ABIVERSION]);
+}
+
+/**
+ * myversion - print the elf header version
+ * @e_ident: pointer to elf header version
+ *
+ * Return: version of elf file
+ */
+void myversion(unsigned char *e_ident)
+{
+	printf(" Version:                             %d", e_ident[EI_VERSION]);
+	switch(e_ident[EI_VERSION])
+	{
+		case EV_CURRENT:
+			printf(" (current)\n");
+			break;
+		default:
+			printf("\n");
+			break;
+	}
 }
