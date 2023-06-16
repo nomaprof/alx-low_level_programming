@@ -8,7 +8,7 @@
   * Return: Success or Failure
   */
 
-dlistint_t *add_dnodeint(dlisting_t **head, const int n)
+dlistint_t *add_dnodeint(dlistint_t **head, const int n)
 {
 	dlistint_t *insert_new;
 
