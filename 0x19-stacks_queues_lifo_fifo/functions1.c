@@ -104,11 +104,11 @@ void _pop(stack_t **doubly, unsigned int cline)
 }
 
 /**
- * _swap - exchange the the topmost elements of the stack
+ * _swap -exchange the 
  *
- * @doubly: linked list head
- * @cline: track line number
- * Return: no value
+ * @doubly: head of the linked list
+ * @cline: line number
+ * Return: no return
  */
 void _swap(stack_t **doubly, unsigned int cline)
 {
