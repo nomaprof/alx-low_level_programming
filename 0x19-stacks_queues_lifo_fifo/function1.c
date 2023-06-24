@@ -60,7 +60,7 @@ void _pall(stack_t **doubly, unsigned int cline)
 }
 
 /**
- * _pint - display element on top of the stack
+ * _pint - show the element that it at the very top of the stack
  *
  * @doubly: linked list head
  * @cline: track the line number
@@ -104,11 +104,10 @@ void _pop(stack_t **doubly, unsigned int cline)
 }
 
 /**
- * _swap -exchange the 
- *
- * @doubly: head of the linked list
- * @cline: line number
- * Return: no return
+ * _swap -exchange the top two elements at the top of the stack
+ * @doubly: the start of the linked list
+ * @cline: track the line number
+ * Return: no value
  */
 void _swap(stack_t **doubly, unsigned int cline)
 {
