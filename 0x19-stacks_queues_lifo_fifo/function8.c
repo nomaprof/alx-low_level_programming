@@ -1,90 +1,166 @@
-#include "monty.h"
+#include <stdlib.h>
+
+char **strtow(char *str, char *delims);
+int is_delim(char ch, char *delims);
+int get_word_length(char *str, char *delims);
+int get_word_count(char *str, char *delims);
+char *get_next_word(char *str, char *delims);
 
 /**
- *add_dnodeint_end - include a new node at the end of the list
- *@head: start of linked list
- *@n: node to be added
- *Return: the doubly linked list
- */
-stack_t *add_dnodeint_end(stack_t **head, const int n)
-{
-	stack_t *temp, *aux;
-
-	if (head == NULL)
-		return (NULL);
-	temp = malloc(sizeof(stack_t));
-	if (!temp)
-	{
-		dprintf(2, "Error: malloc failed\n");
-		free_vglo();
-		exit(EXIT_FAILURE);
-	}
-	temp->n = n;
-	/*Careful with the first time*/
-	if (*head == NULL)
-	{
-		temp->next = *head;
-		temp->prev = NULL;
-		*head = temp;
-		return (*head);
-	}
-	aux = *head;
-	while (aux->next)
-		aux = aux->next;
-	temp->next = aux->next;
-	temp->prev = aux;
-	aux->next = temp;
-	return (aux->next);
-}
-
-/**
- *add_dnodeint - include new node to start of doubly linked list
- *@head: the start of the doubly linked list
- *@n: the new node to include in the list
- *Return: the doubly linked list
- */
-stack_t *add_dnodeint(stack_t **head, const int n)
-{
-	stack_t *temp;
-
-	if (head == NULL)
-		return (NULL);
-	temp = malloc(sizeof(stack_t));
-	if (!temp)
-	{
-		dprintf(2, "Error: malloc failed\n");
-		free_vglo();
-		exit(EXIT_FAILURE);
-	}
-	temp->n = n;
-	/*Careful with the first time*/
-	if (*head == NULL)
-	{
-		temp->next = *head;
-		temp->prev = NULL;
-		*head = temp;
-		return (*head);
-	}
-	(*head)->prev = temp;
-	temp->next = (*head);
-	temp->prev = NULL;
-	*head = temp;
-	return (*head);
-}
-
-/**
- * free_dlistint - set memory free
+ * strtow - tokenize a string
  *
- * @head: start of the doubly linked list
- * Return: no value
+ * @str: the string
+ * @delims: the separating delimiters
+ *
+ * Return:pointer to tokens
  */
-void free_dlistint(stack_t *head)
-{
-	stack_t *hold;
 
-	while ((hold = head) != NULL)
+char **strtow(char *str, char *delims)
+{
+	char **words = NULL;
+	int wc, wordLen, n, i = 0;
+
+	if (str == NULL || !*str)
+		return (NULL);
+	wc = get_word_count(str, delims);
+
+
+	if (wc == 0)
+		return (NULL);
+	words = malloc((wc + 1) * sizeof(char *));
+	if (words == NULL)
+		return (NULL);
+	while (i < wc)
 	{
-		head = head->next;
-		free(hold);
+		wordLen = get_word_length(str, delims);
+		if (is_delim(*str, delims))
+		{
+			str = get_next_word(str, delims);
+		}
+		words[i] = malloc((wordLen + 1) * sizeof(char));
+		if (words[i] == NULL)
+		{
+			while (i >= 0)
+			{
+				i--;
+				free(words[i]);
+			}
+			free(words);
+			return (NULL);
+		}
+		n = 0;
+		while (n < wordLen)
+		{
+			words[i][n] = *(str + n);
+			n++;
+		}
+		words[i][n] = '\0'; /* set end of str */
+		str = get_next_word(str, delims);
+		i++;
 	}
+	words[i] = NULL; /* last element is null for iteration */
+	return (words);
+}
+
+/**
+ * is_delim - confirm if there is a delimiter in the string
+ *
+ * @ch: the character to check
+ *
+ * @delims: point to delimiter array
+ *
+ * Return: success or failure
+ */
+
+int is_delim(char ch, char *delims)
+{
+	int m = 0;
+
+	while (delims[m])
+	{
+		if (delims[m] == ch)
+			return (1);
+		m++;
+	}
+	return (0);
+}
+
+/**
+ * get_word_length - what is the word length
+ *
+ * @str: the string
+ * @delims: delimiter
+ *
+ * Return: the length
+ */
+
+int get_word_length(char *str, char *delims)
+{
+	int wLen = 0, pending = 1, m = 0;
+
+	while (*(str + m))
+	{
+		if (is_delim(str[m], delims))
+			pending = 1;
+		else if (pending)
+		{
+			wLen++;
+		}
+		if (wLen > 0 && is_delim(str[m], delims))
+			break;
+		m++;
+	}
+	return (wLen);
+}
+
+/**
+ * get_word_count - count number of words in a string
+ *
+ * @str: the string
+ * @delims: delimiter
+ *
+ * Return: the number of words
+ */
+
+int get_word_count(char *str, char *delims)
+{
+	int wc = 0, pending = 1, i = 0;
+
+	while (*(str + i))
+	{
+		if (is_delim(str[i], delims))
+			pending = 1;
+		else if (pending)
+		{
+			pending = 0;
+			wc++;
+		}
+		i++;
+	}
+	return (wc);
+}
+
+/**
+ * get_next_word - fetch the next word from a string
+ *
+ * @str: string to get next word from
+ * @delims: the delimiters
+ *
+ * Return: a pointer to the first character of the next word
+ */
+
+char *get_next_word(char *str, char *delims)
+{
+	int pending = 0;
+	int m = 0;
+
+	while (*(str + m))
+	{
+		if (is_delim(str[m], delims))
+			pending = 1;
+		else if (pending)
+			break;
+		m++;
+	}
+	return (str + m);
 }

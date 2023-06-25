@@ -1,63 +1,80 @@
 #include "monty.h"
 
+void _rotl(stack_t **stack, unsigned int line_number);
+void _rotr(stack_t **stack, unsigned int line_number);
+void _stack(stack_t **stack, unsigned int line_number);
+void _queue(stack_t **stack, unsigned int line_number);
+
 /**
- * _rotl - rearrange stack as first element to the last and last to the first
- *
- * @doubly: start of the linked list
- * @cline: track the line number
- * Return: no value
+ * _rotl - rearranges the stack by making the top element the last
+ * @stack: point to the top of the stack
+ * @line_number: track the line number
  */
-void _rotl(stack_t **doubly, unsigned int cline)
+void _rotl(stack_t **stack, unsigned int line_number)
 {
-	stack_t *aux1 = NULL;
-	stack_t *aux2 = NULL;
-	(void)cline;
+	stack_t *top, *bottom;
 
-	if (*doubly == NULL)
+	if ((*stack)->next == NULL || (*stack)->next->next == NULL)
 		return;
 
-	if ((*doubly)->next == NULL)
-		return;
+	top = (*stack)->next;
+	bottom = (*stack)->next;
+	while (bottom->next != NULL)
+		bottom = bottom->next;
 
-	aux1 = (*doubly)->next;
-	aux2 = *doubly;
+	top->next->prev = *stack;
+	(*stack)->next = top->next;
+	bottom->next = top;
+	top->next = NULL;
+	top->prev = bottom;
 
-	for (; aux2->next != NULL; aux2 = aux2->next)
-		;
-
-	aux1->prev = NULL;
-	aux2->next = *doubly;
-	(*doubly)->next = NULL;
-	(*doubly)->prev = aux2;
-	*doubly = aux1;
+	(void)line_number;
 }
 
 /**
- * _rotr - reverse the whole stack fifo to lilo
- *
- * @doubly: start of the linked list
- * @cline: track the line number
- * Return: no value
+ * _rotr - makes the last element the first on the stack
+ * @stack: pointer to the top of the stack
+ * @line_number: track the line number
  */
-void _rotr(stack_t **doubly, unsigned int cline)
+void _rotr(stack_t **stack, unsigned int line_number)
 {
-	stack_t *aux = NULL;
-	(void)cline;
+	stack_t *top, *bottom;
 
-	if (*doubly == NULL)
+	if ((*stack)->next == NULL || (*stack)->next->next == NULL)
 		return;
 
-	if ((*doubly)->next == NULL)
-		return;
+	top = (*stack)->next;
+	bottom = (*stack)->next;
+	while (bottom->next != NULL)
+		bottom = bottom->next;
 
-	aux = *doubly;
+	bottom->prev->next = NULL;
+	(*stack)->next = bottom;
+	bottom->prev = *stack;
+	bottom->next = top;
+	top->prev = bottom;
 
-	for (; aux->next != NULL; aux = aux->next)
-		;
+	(void)line_number;
+}
 
-	aux->prev->next = NULL;
-	aux->next = *doubly;
-	aux->prev = NULL;
-	(*doubly)->prev = aux;
-	*doubly = aux;
+/**
+ * _stack - change a queue into a stack
+ * @stack: point to the top of the stack
+ * @line_number: track the line number
+ */
+void _stack(stack_t **stack, unsigned int line_number)
+{
+	(*stack)->n = STACK;
+	(void)line_number;
+}
+
+/**
+ * _queue - change a stack into a queue
+ * @stack: point to the top of the stack
+ * @line_number: track the line number
+ */
+void _queue(stack_t **stack, unsigned int line_number)
+{
+	(*stack)->n = QUEUE;
+	(void)line_number;
 }

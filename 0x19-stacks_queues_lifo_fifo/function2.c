@@ -1,102 +1,114 @@
 #include "monty.h"
 
-/**
- * _queue - the first in first out style of arranging elements
- *
- * @doubly: the start of the doubly linked list
- * @cline: track line number
- * Return: no value
- */
-void _queue(stack_t **doubly, unsigned int cline)
-{
-	(void)doubly;
-	(void)cline;
-
-	vglo.lifo = 0;
-}
+void _add(stack_t **stack, unsigned int line_number);
+void _sub(stack_t **stack, unsigned int line_number);
+void _div(stack_t **stack, unsigned int line_number);
+void _mul(stack_t **stack, unsigned int line_number);
+void _mod(stack_t **stack, unsigned int line_number);
 
 /**
- * _stack - the last in first out style of arranging elements
+ * _add - sum the top two elements in the stack
+ * @stack: point to the top of the stack
+ * @line_number: track the line number
  *
- * @doubly: the start of the doubly linked list
- * @cline: track line number
- * Return: no value
+ * Description: initial top value deleted and replaced with answer
  */
-void _stack(stack_t **doubly, unsigned int cline)
+void _add(stack_t **stack, unsigned int line_number)
 {
-	(void)doubly;
-	(void)cline;
-
-	vglo.lifo = 1;
-}
-
-/**
- * _add - select the last two elements of a list and add them
- *
- * @doubly: the start of the linked list
- * @cline: track the line number;
- * Return: no value
- */
-void _add(stack_t **doubly, unsigned int cline)
-{
-	int u = 0;
-	stack_t *aux = NULL;
-
-	aux = *doubly;
-
-	for (; aux != NULL; aux = aux->next, u++)
-		;
-
-	if (u < 2)
+	if ((*stack)->next == NULL || (*stack)->next->next == NULL)
 	{
-		dprintf(2, "L%u: can't add, stack too short\n", cline);
-		free_vglo();
-		exit(EXIT_FAILURE);
+		set_op_tok_error(short_stack_error(line_number, "add"));
+		return;
 	}
 
-	aux = (*doubly)->next;
-	aux->n += (*doubly)->n;
-	_pop(doubly, cline);
+	(*stack)->next->next->n += (*stack)->next->n;
+	_pop(stack, line_number);
 }
 
 /**
- * _nop - this function does nothing
+ * _sub - find the difference between top two elements of stack
+ * @stack: point to the top of the stack
+ * @line_number: track the line number
  *
- * @doubly: start of the linked list
- * @cline: track the line number;
- * Return: no value
+ * Description: initial top value deleted and replaced with answer
  */
-void _nop(stack_t **doubly, unsigned int cline)
+void _sub(stack_t **stack, unsigned int line_number)
 {
-	(void)doubly;
-	(void)cline;
-}
-
-/**
- * _sub - find the difference between the top two elements of the stack
- *
- * @doubly: start of the linked list
- * @cline: track the  line number;
- * Return: no value
- */
-void _sub(stack_t **doubly, unsigned int cline)
-{
-	int u = 0;
-	stack_t *aux = NULL;
-
-	aux = *doubly;
-
-	for (; aux != NULL; aux = aux->next, u++)
-		;
-
-	if (u < 2)
+	if ((*stack)->next == NULL || (*stack)->next->next == NULL)
 	{
-		dprintf(2, "L%u: can't sub, stack too short\n", cline);
-		free_vglo();
-		exit(EXIT_FAILURE);
+		set_op_tok_error(short_stack_error(line_number, "sub"));
+		return;
 	}
 
-	aux = (*doubly)->next;
-	aux->n -= (*doubly)->n;
-	_pop(doubly, cline);
+	(*stack)->next->next->n -= (*stack)->next->n;
+	_pop(stack, line_number);
+}
+
+/**
+ * _div - divide the top element of a stack by the second to the top element
+ * @stack: point to the top of the stack
+ * @line_number: track the line number
+ *
+ * Description: initial top value deleted and replaced with answer
+ */
+void _div(stack_t **stack, unsigned int line_number)
+{
+	if ((*stack)->next == NULL || (*stack)->next->next == NULL)
+	{
+		set_op_tok_error(short_stack_error(line_number, "div"));
+		return;
+	}
+
+	if ((*stack)->next->n == 0)
+	{
+		set_op_tok_error(div_error(line_number));
+		return;
+	}
+
+	(*stack)->next->next->n /= (*stack)->next->n;
+	_pop(stack, line_number);
+}
+
+/**
+ * _mul - find the product of the first two elements of a stack
+ * @stack: point to the top of the stack
+ * @line_number: track the line number
+ *
+ * Description: initial top value deleted and replaced with answer
+ */
+void _mul(stack_t **stack, unsigned int line_number)
+{
+	if ((*stack)->next == NULL || (*stack)->next->next == NULL)
+	{
+		set_op_tok_error(short_stack_error(line_number, "mul"));
+		return;
+	}
+
+	(*stack)->next->next->n *= (*stack)->next->n;
+	_pop(stack, line_number);
+}
+
+/**
+ * _mod - find the remainder of the division
+ * @stack: point to the top of the stack
+ * @line_number: track the line number
+ *
+ * Description: initial top value deleted and replaced with answer
+ */
+void _mod(stack_t **stack, unsigned int line_number)
+{
+	if ((*stack)->next == NULL || (*stack)->next->next == NULL)
+	{
+		set_op_tok_error(short_stack_error(line_number, "mod"));
+		return;
+	}
+
+	if ((*stack)->next->n == 0)
+	{
+		set_op_tok_error(div_error(line_number));
+		return;
+	}
+
+	(*stack)->next->next->n %= (*stack)->next->n;
+	_pop(stack, line_number);
 }

@@ -1,73 +1,36 @@
 #include "monty.h"
-/**
- * _calloc - joining two strings together
- * @nmemb: total number of elements
- * @size: the data type of the elements
- * Return: no value
- */
-void *_calloc(unsigned int nmemb, unsigned int size)
-{
-	void *p = NULL;
-	unsigned int m;
 
-	if (nmemb == 0 || size == 0)
-	{
-		return (NULL);
-	}
-	p = malloc(nmemb * size);
-	if (p == NULL)
-	{
-		return (NULL);
-	}
-	for (m = 0; m < (nmemb * size); m++)
-	{
-		*((char *)(p) + m) = 0;
-	}
-	return (p);
-}
 /**
- * _realloc - change the size of memory allocated
- * @ptr: pointer to reallocation
- * @old_size: old size
- * @new_size: new size
- * Return: no value
+ * set_op_tok_error - last element of opcode token as error code
+ * @error_code: opcode token integer
  */
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
+void set_op_tok_error(int error_code)
 {
-	char *p = NULL;
-	unsigned int m;
+	int toks_len = 0, i = 0;
+	char *exit_str = NULL;
+	char **new_toks = NULL;
 
-	if (new_size == old_size)
-		return (ptr);
-	if (ptr == NULL)
+	toks_len = token_arr_len();
+	new_toks = malloc(sizeof(char *) * (toks_len + 2));
+	if (!op_toks)
 	{
-		p = malloc(new_size);
-		if (!p)
-			return (NULL);
-		return (p);
+		malloc_error();
+		return;
 	}
-	if (new_size == 0 && ptr != NULL)
+	while (i < toks_len)
 	{
-		free(ptr);
-		return (NULL);
+		new_toks[i] = op_toks[i];
+		i++;
 	}
-	if (new_size > old_size)
+	exit_str = get_int(error_code);
+	if (!exit_str)
 	{
-		p = malloc(new_size);
-		if (!p)
-			return (NULL);
-		for (m = 0; m < old_size; m++)
-			p[m] = *((char *)ptr + m);
-		free(ptr);
+		free(new_toks);
+		malloc_error();
+		return;
 	}
-	else
-	{
-		p = malloc(new_size);
-		if (!p)
-			return (NULL);
-		for (m = 0; m < new_size; m++)
-			p[m] = *((char *)ptr + m);
-		free(ptr);
-	}
-	return (p);
+	new_toks[i++] = exit_str;
+	new_toks[i] = NULL;
+	free(op_toks);
+	op_toks = new_toks;
 }

@@ -1,148 +1,58 @@
 #include "monty.h"
 
+void _nop(stack_t **stack, unsigned int line_number);
+void _pchar(stack_t **stack, unsigned int line_number);
+void _pstr(stack_t **stack, unsigned int line_number);
+
 /**
- * _div - division done as second element over the first element at the top
- *
- * @doubly: start of the linked list
- * @cline: track the line number;
- * Return: no value
+ * _nop - this does nothing when called
+ * @stack: point to the top of the list
+ * @line_number: track the line number
  */
-void _div(stack_t **doubly, unsigned int cline)
+void _nop(stack_t **stack, unsigned int line_number)
 {
-	int u = 0;
-	stack_t *aux = NULL;
-
-	aux = *doubly;
-
-	for (; aux != NULL; aux = aux->next, u++)
-		;
-
-	if (u < 2)
-	{
-		dprintf(2, "L%u: can't div, stack too short\n", cline);
-		free_vglo();
-		exit(EXIT_FAILURE);
-	}
-
-	if ((*doubly)->n == 0)
-	{
-		dprintf(2, "L%u: division by zero\n", cline);
-		free_vglo();
-		exit(EXIT_FAILURE);
-	}
-
-	aux = (*doubly)->next;
-	aux->n /= (*doubly)->n;
-	_pop(doubly, cline);
+	(void)stack;
+	(void)line_number;
 }
 
 /**
- * _mul - multiply first two elements at the top of the stack
- *
- * @doubly: start of the linked list
- * @cline: track the line number;
- * Return: no value
+ * _pchar - Prints the character at the top of the stack
+ * @stack: point to the top of the stack
+ * @line_number: track the line number
  */
-void _mul(stack_t **doubly, unsigned int cline)
+void _pchar(stack_t **stack, unsigned int line_number)
 {
-	int u = 0;
-	stack_t *aux = NULL;
-
-	aux = *doubly;
-
-	for (; aux != NULL; aux = aux->next, u++)
-		;
-
-	if (u < 2)
+	if ((*stack)->next == NULL)
 	{
-		dprintf(2, "L%u: can't mul, stack too short\n", cline);
-		free_vglo();
-		exit(EXIT_FAILURE);
+		set_op_tok_error(pchar_error(line_number, "stack empty"));
+		return;
+	}
+	if ((*stack)->next->n < 0 || (*stack)->next->n > 127)
+	{
+		set_op_tok_error(pchar_error(line_number,
+					     "value out of range"));
+		return;
 	}
 
-	aux = (*doubly)->next;
-	aux->n *= (*doubly)->n;
-	_pop(doubly, cline);
+	printf("%c\n", (*stack)->next->n);
 }
 
 /**
- * _mod - computes remainder from a division operation
- *
- * @doubly: start of the linked list
- * @cline: track the line number;
- * Return: no value
+ * _pstr - Print the strings in a stack
+ * @stack: point to the top of the stack
+ * @line_number: track the line number
  */
-void _mod(stack_t **doubly, unsigned int cline)
+void _pstr(stack_t **stack, unsigned int line_number)
 {
-	int u = 0;
-	stack_t *aux = NULL;
+	stack_t *tmp = (*stack)->next;
 
-	aux = *doubly;
-
-	for (; aux != NULL; aux = aux->next, u++)
-		;
-
-	if (u < 2)
+	while (tmp && tmp->n != 0 && (tmp->n > 0 && tmp->n <= 127))
 	{
-		dprintf(2, "L%u: can't mod, stack too short\n", cline);
-		free_vglo();
-		exit(EXIT_FAILURE);
-	}
-
-	if ((*doubly)->n == 0)
-	{
-		dprintf(2, "L%u: division by zero\n", cline);
-		free_vglo();
-		exit(EXIT_FAILURE);
-	}
-
-	aux = (*doubly)->next;
-	aux->n %= (*doubly)->n;
-	_pop(doubly, cline);
-}
-/**
- * _pchar - print the element at the top of the stack
- *
- * @doubly: start of the linked list
- * @cline: track the line number
- * Return: no value
- */
-void _pchar(stack_t **doubly, unsigned int cline)
-{
-	if (doubly == NULL || *doubly == NULL)
-	{
-		dprintf(2, "L%u: can't pchar, stack empty\n", cline);
-		free_vglo();
-		exit(EXIT_FAILURE);
-	}
-	if ((*doubly)->n < 0 || (*doubly)->n >= 128)
-	{
-		dprintf(2, "L%u: can't pchar, value out of range\n", cline);
-		free_vglo();
-		exit(EXIT_FAILURE);
-	}
-	printf("%c\n", (*doubly)->n);
-}
-
-/**
- * _pstr - print stack strings
- *
- * @doubly: start of the linked list
- * @cline: track the line number;
- * Return: no value
- */
-void _pstr(stack_t **doubly, unsigned int cline)
-{
-	stack_t *aux;
-	(void)cline;
-
-	aux = *doubly;
-
-	while (aux && aux->n > 0 && aux->n < 128)
-	{
-		printf("%c", aux->n);
-		aux = aux->next;
+		printf("%c", tmp->n);
+		tmp = tmp->next;
 	}
 
 	printf("\n");
+
+	(void)line_number;
 }

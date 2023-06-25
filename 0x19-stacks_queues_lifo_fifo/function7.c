@@ -1,41 +1,60 @@
 #include "monty.h"
+#include <string.h>
+
+void free_stack(stack_t **stack);
+int init_stack(stack_t **stack);
+int check_mode(stack_t *stack);
 
 /**
- * get_opcodes - take any opcode of your choice
- *
- * @opc: use the correct opcode
- *
- * Return: pointer to the function that carries out the opcode
+ * free_stack - Frees memory after it is used
+ * @stack: point to the top of a stack or the bottom of a queue
  */
-void (*get_opcodes(char *opc))(stack_t **stack, unsigned int line_number)
+void free_stack(stack_t **stack)
 {
-	instruction_t instruct[] = {
-		{"push", _push},
-		{"pall", _pall},
-		{"pint", _pint},
-		{"pop", _pop},
-		{"swap", _swap},
-		{"queue", _queue},
-		{"stack", _stack},
-		{"add", _add},
-		{"nop", _nop},
-		{"sub", _sub},
-		{"mul", _mul},
-		{"div", _div},
-		{"mod", _mod},
-		{"pchar", _pchar},
-		{"pstr", _pstr},
-		{"rotl", _rotl},
-		{"rotr", _rotr},
-		{NULL, NULL}
-	};
-	int m;
+	stack_t *tmp = *stack;
 
-	for (m = 0; instruct[m].opcode; m++)
+	while (*stack)
 	{
-		if (_strcmp(instruct[m].opcode, opc) == 0)
-			break;
+		tmp = (*stack)->next;
+		free(*stack);
+		*stack = tmp;
 	}
+}
 
-	return (instruct[m].f);
+/**
+ * init_stack - set the initial contents of a stack and queue
+ * @stack: point to an uninitialied stack
+ *
+ * Return: success or failure
+ */
+int init_stack(stack_t **stack)
+{
+	stack_t *p;
+
+	p = malloc(sizeof(stack_t));
+	if (p == NULL)
+		return (malloc_error());
+
+	p->n = STACK;
+	p->prev = NULL;
+	p->next = NULL;
+
+	*stack = p;
+
+	return (EXIT_SUCCESS);
+}
+
+/**
+ * check_mode - confirm if list is a stack or a queue
+ * @stack: point to the top  of a stack or the bottom of a queue
+ *
+ * Return: the corresponding values for the the mode
+ */
+int check_mode(stack_t *stack)
+{
+	if (stack->n == STACK)
+		return (STACK);
+	else if (stack->n == QUEUE)
+		return (QUEUE);
+	return (2);
 }
